@@ -1,0 +1,146 @@
+import { Ionicons } from '@expo/vector-icons';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ProgressBar } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+export default function HomeScreen() {
+  const userName = 'Arturo';
+  const occupancy = 70;
+  const currentPeople = 42;
+  const maxCapacity = 60;
+  const planName = 'Plan Premium';
+  const planExpiryDate = '30 de Noviembre, 2025';
+
+  const getOccupancyColor = (percentage: number) => {
+    if (percentage < 50) return '#007AFF'; 
+    if (percentage < 80) return '#FFD700';
+    return '#FF3B30'; 
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      {/* Header */}
+      <Text style={styles.headerText}>Hola, {userName}</Text>
+      <Text style={styles.subHeader}>Bienvenido a PumpUp</Text>
+
+      {/* Aforo */}
+      <View style={styles.card}>
+        <View style={styles.cardHeader}>
+          <Ionicons name="people" size={22} color="#007AFF" />
+          <Text style={styles.cardTitle}>Aforo Actual</Text>
+        </View>
+
+        <Text style={[styles.occupancy, { color: getOccupancyColor(occupancy) }]}>
+          {occupancy}%
+        </Text>
+        <Text style={styles.textMuted}>
+          {currentPeople} de {maxCapacity} personas en el gimnasio
+        </Text>
+
+        <ProgressBar progress={occupancy / 100} color={getOccupancyColor(occupancy)} style={styles.progress} />
+        <Text style={styles.textMutedSmall}>
+          {occupancy < 50
+            ? '¡Perfecto momento para entrenar!'
+            : occupancy < 80
+            ? 'Hay gente pero no está muy lleno'
+            : 'El gimnasio está bastante lleno'}
+        </Text>
+      </View>
+
+      {/* Plan */}
+      <View style={styles.card}>
+        <View style={styles.cardHeader}>
+          <Ionicons name="calendar" size={22} color="#007AFF" />
+          <Text style={styles.cardTitle}>Estado de tu Plan</Text>
+        </View>
+        <Text style={styles.textMuted}>Plan Actual</Text>
+        <Text style={styles.textMain}>{planName}</Text>
+        <Text style={styles.textMutedSmall}>Vigente hasta</Text>
+        <Text style={styles.textMain}>{planExpiryDate}</Text>
+      </View>
+
+      {/* Botón Reserva */}
+      <TouchableOpacity style={styles.reserveButton}>
+        <Ionicons name="barbell" size={20} color="#fff" />
+        <Text style={styles.reserveText}>Ver máquinas disponibles</Text>
+      </TouchableOpacity>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    padding: 20,
+  },
+  headerText: {
+    fontSize: 26,
+    fontWeight: 'bold',
+    marginTop: 10,
+  },
+  subHeader: {
+    color: '#666',
+    marginBottom: 20,
+  },
+  card: {
+    backgroundColor: '#F9F9F9',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 16,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+  },
+  cardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 8,
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  occupancy: {
+    fontSize: 48,
+    textAlign: 'center',
+    marginVertical: 8,
+  },
+  progress: {
+    height: 8,
+    borderRadius: 4,
+    marginTop: 8,
+    marginBottom: 4,
+  },
+  textMuted: {
+    textAlign: 'center',
+    color: '#777',
+  },
+  textMutedSmall: {
+    textAlign: 'center',
+    color: '#999',
+    fontSize: 12,
+  },
+  textMain: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#333',
+    marginBottom: 4,
+  },
+  reserveButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#007AFF',
+    padding: 14,
+    borderRadius: 10,
+    gap: 8,
+  },
+  reserveText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+});
