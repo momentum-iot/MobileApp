@@ -1,11 +1,15 @@
+import { useAuth } from '@/src/presentation/context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ProgressBar } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
+//import { useAuth } from '@/presentation/context/AuthContext';
 
 export default function HomeScreen() {
-  const userName = 'Arturo';
+  const { user } = useAuth();
+  
+  // Datos temporales hasta que conectes los endpoints
   const occupancy = 70;
   const currentPeople = 42;
   const maxCapacity = 60;
@@ -13,15 +17,18 @@ export default function HomeScreen() {
   const planExpiryDate = '30 de Noviembre, 2025';
 
   const getOccupancyColor = (percentage: number) => {
-    if (percentage < 50) return '#007AFF'; 
+    if (percentage < 50) return '#007AFF';
     if (percentage < 80) return '#FFD700';
-    return '#FF3B30'; 
+    return '#FF3B30';
   };
+
+  // Extraer primer nombre
+  const firstName = user?.name.split(' ')[0] || 'Usuario';
 
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
-      <Text style={styles.headerText}>Hola, {userName}</Text>
+      <Text style={styles.headerText}>Hola, {firstName}</Text>
       <Text style={styles.subHeader}>Bienvenido a PumpUp</Text>
 
       {/* Aforo */}
@@ -38,7 +45,11 @@ export default function HomeScreen() {
           {currentPeople} de {maxCapacity} personas en el gimnasio
         </Text>
 
-        <ProgressBar progress={occupancy / 100} color={getOccupancyColor(occupancy)} style={styles.progress} />
+        <ProgressBar 
+          progress={occupancy / 100} 
+          color={getOccupancyColor(occupancy)} 
+          style={styles.progress} 
+        />
         <Text style={styles.textMutedSmall}>
           {occupancy < 50
             ? '¡Perfecto momento para entrenar!'
@@ -65,6 +76,14 @@ export default function HomeScreen() {
         <Ionicons name="barbell" size={20} color="#fff" />
         <Text style={styles.reserveText}>Ver máquinas disponibles</Text>
       </TouchableOpacity>
+
+      {/* Info temporal */}
+      <View style={styles.infoBox}>
+        <Ionicons name="information-circle" size={20} color="#007AFF" />
+        <Text style={styles.infoText}>
+          Datos de aforo y plan son temporales. Conecta tus endpoints para ver datos reales.
+        </Text>
+      </View>
     </SafeAreaView>
   );
 }
@@ -137,10 +156,24 @@ const styles = StyleSheet.create({
     padding: 14,
     borderRadius: 10,
     gap: 8,
+    marginBottom: 16,
   },
   reserveText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
+  },
+  infoBox: {
+    flexDirection: 'row',
+    backgroundColor: '#EAF3FF',
+    padding: 12,
+    borderRadius: 10,
+    gap: 10,
+    alignItems: 'center',
+  },
+  infoText: {
+    flex: 1,
+    fontSize: 13,
+    color: '#555',
   },
 });
