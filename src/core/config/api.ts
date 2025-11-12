@@ -1,0 +1,45 @@
+export const API_CONFIG = {
+    BASE_URL: "http://localhost:8080/api",
+    TIMEOUT: 10000,
+    HEADERS: {
+        'Content-Type': 'application/json'
+    }
+}
+
+export const API_ENDPOINTS = {
+    LOGIN: "auth/login",
+    REGISTER: "auth/register",
+    REFRESH: "auth/refresh",
+    GET_PROFILE: "auth/me",
+    EQUIPMENT: "/equipment"
+}
+
+export const buildUrl = (endpoint: string): string => {
+    return "${API_CONFIG.BASE_URL}${endpoint}"
+}
+
+export interface ApiError {
+    message : string,
+    statusCode? : number;
+    errors? : Record<string,string[]>
+}
+
+export const handleApiError = (error: any): ApiError => {
+    if (error.response) {
+        return {
+            message : error.response.data?.message || "Error en el servidor",
+            statusCode: error.response.status,
+            errors: error.response.data?.errors
+        }
+    }
+    else if (error.request) {
+        return {
+            message: "No se pudo conectar al servidor. Verifica tu conexion"
+        }
+    }
+    else {
+        return {
+            message : error.message || "Error inesperado"
+        }
+    }
+}
