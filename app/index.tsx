@@ -1,11 +1,32 @@
+import { useAuth } from '@/src/presentation/context/AuthContext';
 import { Redirect } from 'expo-router';
+import { View, StyleSheet } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
 
 export default function Index() {
-  const user = false;
+  const { isAuthenticated, isLoading } = useAuth();
 
-  if (user) {
+  if (isLoading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#007AFF" />
+      </View>
+    )
+  }
+
+  if (isAuthenticated) {
     return <Redirect href="/(tabs)" />;
   }
 
   return <Redirect href="/login" />;
+
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+});
