@@ -6,22 +6,38 @@ import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, Image, Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-//import { useAuth } from '@/presentation/context/AuthContext';
+
 
 export default function ProfileScreen() {
   const router = useRouter();
-  //const { user, logout } = useAuth();
   const { user } = useAuth();
   const [showPaymentModal, setShowPaymentModal] = useState(false);
 
-  // Datos temporales hasta que conectes los otros endpoints
-  const tempData = {
-    plan: 'Plan Premium',
-    planExpiry: '30 de Noviembre, 2025'
-    //memberSince: user?.createdAt 
-    //? new Date(user.createdAt).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' })
-    //: 'Enero 2024',
+  if (!user) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <Text>Cargando...</Text>
+      </SafeAreaView>
+    );
+  }
+
+  const memberSince = user.joinDate
+    ? new Date(user.joinDate).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' })
+    : 'Enero 2024';
+
+
+  const membershipNames: Record<string, string> = {
+    BASICO: 'Plan Básico',
+    PREMIUM: 'Plan Premium',
   };
+
+  const planName = user.membership ? membershipNames[user.membership] : 'Sin plan';
+
+
+  const planExpiry = user.joinDate
+    ? new Date(new Date(user.joinDate).getTime() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })
+    : '30 de Noviembre, 2025';
+
 
   /*const handleLogout = () => {
     Alert.alert('Cerrar Sesión', '¿Seguro que quieres salir?', [
@@ -35,24 +51,16 @@ export default function ProfileScreen() {
         },
       },
     ]);
-  };*/
-
-  if (!user) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <Text>Cargando...</Text>
-      </SafeAreaView>
-    );
-  }
+  }; */
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Header */}
+
         <Text style={styles.header}>Mi Perfil</Text>
         <Text style={styles.subHeader}>Gestiona tu cuenta y preferencias</Text>
 
-        {/* User Profile */}
+
         <View style={styles.card}>
           <View style={styles.userRow}>
             <Image
@@ -62,15 +70,15 @@ export default function ProfileScreen() {
               style={styles.avatar}
             />
             <View style={{ flex: 1 }}>
-              <Text style={styles.userName}>{user.name}</Text>
+              <Text style={styles.userName}>{user.name} {user.lastName}</Text>
               <Text style={styles.userEmail}>{user.email}</Text>
-              {user.phone && <Text style={styles.userPhone}>{user.phone}</Text>}
-              {/*<Text style={styles.userSince}>Miembro desde {tempData.memberSince}</Text>*/}
+              {user.phone && <Text style={styles.userPhone}>📞 {user.phone}</Text>}
+              <Text style={styles.userSince}>Miembro desde {memberSince}</Text>
             </View>
           </View>
         </View>
 
-        {/* Plan */}
+
         <View style={[styles.card, styles.primaryCard]}>
           <View style={styles.rowBetween}>
             <View style={styles.rowCenter}>
@@ -81,10 +89,10 @@ export default function ProfileScreen() {
           </View>
 
           <Text style={styles.label}>Plan Actual</Text>
-          <Text style={styles.planText}>{tempData.plan}</Text>
+          <Text style={styles.planText}>{planName}</Text>
 
           <Text style={styles.label}>Vigente hasta</Text>
-          <Text style={styles.planText}>{tempData.planExpiry}</Text>
+          <Text style={styles.planText}>{planExpiry}</Text>
 
           <TouchableOpacity
             style={styles.primaryButton}
@@ -94,7 +102,7 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Pagos */}
+
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Pagos</Text>
           <TouchableOpacity style={styles.optionRow}>
@@ -108,7 +116,7 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Cuenta */}
+
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Cuenta</Text>
 
@@ -133,16 +141,14 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Cerrar sesión */}
-        {/*
-<TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-  <Ionicons name="log-out" size={18} color="#fff" />
-  <Text style={styles.logoutText}> Cerrar Sesión</Text>
-</TouchableOpacity>
-*/}
+
+        {/*<TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+          <Ionicons name="log-out" size={18} color="#fff" />
+          <Text style={styles.logoutText}> Cerrar Sesión</Text>
+        </TouchableOpacity>*/}
       </ScrollView>
 
-      {/* Modal de pago */}
+
       <Modal visible={showPaymentModal} transparent animationType="slide">
         <View style={styles.modalOverlay}>
           <View style={styles.modalBox}>
