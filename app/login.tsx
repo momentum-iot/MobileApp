@@ -1,28 +1,47 @@
+import { useAuth } from '@/src/presentation/context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
-    Alert,
-    KeyboardAvoidingView,
-    Platform,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  ActivityIndicator,
 } from 'react-native';
+//import { useAuth } from '@/presentation/context/AuthContext';
 
 export default function LoginScreen() {
-  const router = useRouter(); 
+  const router = useRouter();
+  const { login } = useAuth();
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = () => {
-    if (email && password) {
-      
-      router.replace('/(tabs)'); 
-    } else {
+  const handleLogin = async () => {
+    if (!email || !password) {
       Alert.alert('Campos incompletos', 'Por favor, ingresa tu correo y contraseña.');
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      await login(email, password);
+      // El redirect se hará automáticamente por el AuthContext
+      router.replace('/(tabs)');
+    } catch (error: any) {
+      Alert.alert(
+        'Error de inicio de sesión',
+        error.message || 'Verifica tus credenciales e intenta de nuevo.'
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -30,10 +49,17 @@ export default function LoginScreen() {
     Alert.alert('Recuperar contraseña', 'Esta función aún no está implementada.');
   };
 
+  const handleRegister = () => {
+    Alert.alert('Registro', 'La pantalla de registro aún no está implementada.');
+    // Aquí puedes navegar a la pantalla de registro cuando la crees
+    // router.push('/register');
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}>
+      style={styles.container}
+    >
       <View style={styles.inner}>
         {/* Logo */}
         <View style={styles.logoContainer}>
@@ -52,8 +78,10 @@ export default function LoginScreen() {
             placeholder="tu@email.com"
             placeholderTextColor="#999"
             keyboardType="email-address"
+            autoCapitalize="none"
             value={email}
             onChangeText={setEmail}
+            editable={!isLoading}
           />
 
           <Text style={styles.label}>Contraseña</Text>
@@ -64,20 +92,29 @@ export default function LoginScreen() {
             secureTextEntry
             value={password}
             onChangeText={setPassword}
+            editable={!isLoading}
           />
 
-          <TouchableOpacity style={styles.button} onPress={handleLogin}>
-            <Text style={styles.buttonText}>Ingresar</Text>
+          <TouchableOpacity
+            style={[styles.button, isLoading && styles.buttonDisabled]}
+            onPress={handleLogin}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Text style={styles.buttonText}>Ingresar</Text>
+            )}
           </TouchableOpacity>
         </View>
 
         {/* Opciones extra */}
         <View style={styles.extraOptions}>
-          <TouchableOpacity onPress={handleRecoverPassword}>
+          <TouchableOpacity onPress={handleRecoverPassword} disabled={isLoading}>
             <Text style={styles.link}>¿Olvidaste tu contraseña?</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleRegister} disabled={isLoading}>
             <Text style={styles.linkMuted}>
               ¿No tienes cuenta? <Text style={styles.link}>Regístrate</Text>
             </Text>
@@ -128,6 +165,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     marginTop: 8,
+  },
+  buttonDisabled: {
+    opacity: 0.6,
   },
   buttonText: { color: '#fff', fontWeight: '600', fontSize: 16 },
   extraOptions: { alignItems: 'center', marginTop: 10 },
