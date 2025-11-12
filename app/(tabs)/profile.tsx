@@ -1,25 +1,49 @@
+// app/(tabs)/profile.tsx
+
+import { useAuth } from '@/src/presentation/context/AuthContext';
 import { FontAwesome5, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, Image, Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+//import { useAuth } from '@/presentation/context/AuthContext';
 
 export default function ProfileScreen() {
+  const router = useRouter();
+  //const { user, logout } = useAuth();
+  const { user } = useAuth();
   const [showPaymentModal, setShowPaymentModal] = useState(false);
 
-  const user = {
-    name: 'Arturo González',
-    email: 'arturo@email.com',
+  // Datos temporales hasta que conectes los otros endpoints
+  const tempData = {
     plan: 'Plan Premium',
-    planExpiry: '30 de Noviembre, 2025',
-    memberSince: 'Enero 2024',
+    planExpiry: '30 de Noviembre, 2025'
+    //memberSince: user?.createdAt 
+    //? new Date(user.createdAt).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' })
+    //: 'Enero 2024',
   };
 
-  const handleLogout = () => {
+  /*const handleLogout = () => {
     Alert.alert('Cerrar Sesión', '¿Seguro que quieres salir?', [
       { text: 'Cancelar', style: 'cancel' },
-      { text: 'Sí, salir', onPress: () => console.log('Sesión cerrada ✅') },
+      {
+        text: 'Sí, salir',
+        style: 'destructive',
+        onPress: async () => {
+          await logout();
+          router.replace('/login');
+        },
+      },
     ]);
-  };
+  };*/
+
+  if (!user) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <Text>Cargando...</Text>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -32,13 +56,16 @@ export default function ProfileScreen() {
         <View style={styles.card}>
           <View style={styles.userRow}>
             <Image
-              source={{ uri: 'https://cdn-icons-png.flaticon.com/512/6596/6596121.png' }}
+              source={{
+                uri: user.avatar || 'https://cdn-icons-png.flaticon.com/512/6596/6596121.png'
+              }}
               style={styles.avatar}
             />
             <View style={{ flex: 1 }}>
               <Text style={styles.userName}>{user.name}</Text>
               <Text style={styles.userEmail}>{user.email}</Text>
-              <Text style={styles.userSince}>Miembro desde {user.memberSince}</Text>
+              {user.phone && <Text style={styles.userPhone}>{user.phone}</Text>}
+              {/*<Text style={styles.userSince}>Miembro desde {tempData.memberSince}</Text>*/}
             </View>
           </View>
         </View>
@@ -54,10 +81,10 @@ export default function ProfileScreen() {
           </View>
 
           <Text style={styles.label}>Plan Actual</Text>
-          <Text style={styles.planText}>{user.plan}</Text>
+          <Text style={styles.planText}>{tempData.plan}</Text>
 
           <Text style={styles.label}>Vigente hasta</Text>
-          <Text style={styles.planText}>{user.planExpiry}</Text>
+          <Text style={styles.planText}>{tempData.planExpiry}</Text>
 
           <TouchableOpacity
             style={styles.primaryButton}
@@ -107,10 +134,12 @@ export default function ProfileScreen() {
         </View>
 
         {/* Cerrar sesión */}
-        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-          <Ionicons name="log-out" size={18} color="#fff" />
-          <Text style={styles.logoutText}> Cerrar Sesión</Text>
-        </TouchableOpacity>
+        {/*
+<TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+  <Ionicons name="log-out" size={18} color="#fff" />
+  <Text style={styles.logoutText}> Cerrar Sesión</Text>
+</TouchableOpacity>
+*/}
       </ScrollView>
 
       {/* Modal de pago */}
@@ -119,7 +148,7 @@ export default function ProfileScreen() {
           <View style={styles.modalBox}>
             <Text style={styles.modalTitle}>Renovar Plan</Text>
             <Text style={styles.modalDescription}>
-              Esta función aún no está implementada en la app móvil.
+              Esta función aún no está implementada. Conecta tu endpoint de pagos para habilitarla.
             </Text>
             <Pressable
               style={styles.modalButton}
@@ -166,10 +195,11 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
   primaryButtonText: { color: '#fff', fontSize: 16, fontWeight: '600' },
-  userRow: { flexDirection: 'row', alignItems: 'center' },
+  userRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   avatar: { width: 80, height: 80, borderRadius: 40 },
   userName: { fontSize: 20, fontWeight: 'bold' },
-  userEmail: { color: '#555' },
+  userEmail: { color: '#555', fontSize: 14 },
+  userPhone: { color: '#777', fontSize: 13, marginTop: 2 },
   userSince: { fontSize: 12, color: '#777', marginTop: 4 },
   cardTitle: { fontSize: 18, fontWeight: '600', marginBottom: 8 },
   optionRow: {
@@ -195,6 +225,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FF3B30',
     padding: 14,
     borderRadius: 10,
+    marginBottom: 20,
   },
   logoutText: { color: '#fff', fontWeight: '600', fontSize: 16 },
   modalOverlay: {
