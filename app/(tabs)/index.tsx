@@ -4,12 +4,12 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ProgressBar } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-//import { useAuth } from '@/presentation/context/AuthContext';
+
 
 export default function HomeScreen() {
   const { user } = useAuth();
   
-  // Datos temporales hasta que conectes los endpoints
+  
   const occupancy = 70;
   const currentPeople = 42;
   const maxCapacity = 60;
@@ -22,16 +22,16 @@ export default function HomeScreen() {
     return '#FF3B30';
   };
 
-  // Extraer primer nombre
-  const firstName = user?.name.split(' ')[0] || 'Usuario';
+  
+  const firstName = user?.name || 'Usuario';
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
+    
       <Text style={styles.headerText}>Hola, {firstName}</Text>
       <Text style={styles.subHeader}>Bienvenido a PumpUp</Text>
 
-      {/* Aforo */}
+    
       <View style={styles.card}>
         <View style={styles.cardHeader}>
           <Ionicons name="people" size={22} color="#007AFF" />
@@ -59,7 +59,7 @@ export default function HomeScreen() {
         </Text>
       </View>
 
-      {/* Plan */}
+    
       <View style={styles.card}>
         <View style={styles.cardHeader}>
           <Ionicons name="calendar" size={22} color="#007AFF" />
@@ -71,13 +71,13 @@ export default function HomeScreen() {
         <Text style={styles.textMain}>{planExpiryDate}</Text>
       </View>
 
-      {/* Botón Reserva */}
+    
       <TouchableOpacity style={styles.reserveButton}>
         <Ionicons name="barbell" size={20} color="#fff" />
         <Text style={styles.reserveText}>Ver máquinas disponibles</Text>
       </TouchableOpacity>
 
-      {/* Info temporal */}
+    
       <View style={styles.infoBox}>
         <Ionicons name="information-circle" size={20} color="#007AFF" />
         <Text style={styles.infoText}>

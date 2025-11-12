@@ -13,7 +13,6 @@ import {
   View,
   ActivityIndicator,
 } from 'react-native';
-//import { useAuth } from '@/presentation/context/AuthContext';
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -33,7 +32,6 @@ export default function LoginScreen() {
 
     try {
       await login(email, password);
-      // El redirect se hará automáticamente por el AuthContext
       router.replace('/(tabs)');
     } catch (error: any) {
       Alert.alert(
@@ -50,9 +48,7 @@ export default function LoginScreen() {
   };
 
   const handleRegister = () => {
-    Alert.alert('Registro', 'La pantalla de registro aún no está implementada.');
-    // Aquí puedes navegar a la pantalla de registro cuando la crees
-    // router.push('/register');
+    router.push('/register');
   };
 
   return (
@@ -61,7 +57,7 @@ export default function LoginScreen() {
       style={styles.container}
     >
       <View style={styles.inner}>
-        {/* Logo */}
+        
         <View style={styles.logoContainer}>
           <View style={styles.logoBox}>
             <Ionicons name="barbell" size={50} color="#fff" />
@@ -70,7 +66,7 @@ export default function LoginScreen() {
           <Text style={styles.subtitle}>Bienvenido de vuelta</Text>
         </View>
 
-        {/* Inputs */}
+        
         <View style={styles.form}>
           <Text style={styles.label}>Correo electrónico</Text>
           <TextInput
@@ -108,7 +104,7 @@ export default function LoginScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Opciones extra */}
+        
         <View style={styles.extraOptions}>
           <TouchableOpacity onPress={handleRecoverPassword} disabled={isLoading}>
             <Text style={styles.link}>¿Olvidaste tu contraseña?</Text>
