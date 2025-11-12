@@ -5,12 +5,14 @@ import { CheckSessionUseCase } from "@/src/domain/usecases/CheckSessionUseCase";
 import { GetCurrentUserUseCase } from "@/src/domain/usecases/GetCurrentUserUseCase";
 import { LoginUseCase } from "@/src/domain/usecases/LoginUseCase";
 import { RegisterUseCase } from "@/src/domain/usecases/RegisterUseCase";
+import { LogoutUseCase} from "@/src/domain/usecases/LogoutUseCase";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
 const loginUseCase = new LoginUseCase(authRepository)
 const registerUseCase = new RegisterUseCase(authRepository)
 const getCurrentUserUseCase = new GetCurrentUserUseCase(authRepository)
 const checkSessionUseCase = new CheckSessionUseCase(authRepository)
+const logoutUseCase = new LogoutUseCase(authRepository)
 
 interface AuthContextData {
     user: User | null;
@@ -18,7 +20,7 @@ interface AuthContextData {
     isAuthenticated: boolean;
     login: (email: string, password: string) => Promise<void>;
     register: (data: RegisterData) => Promise<void>;
-    //logout: () => Promise<void>;
+    logout: () => Promise<void>;
     refreshUser: () => Promise<void>;
 }
 
@@ -71,7 +73,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
     };
 
-    /*const logout = async () => {
+    const logout = async () => {
         try {
             await logoutUseCase.execute();
             setUser(null);
@@ -79,7 +81,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
             console.error('Error during logout:', error);
             setUser(null);
         }
-    };*/
+    };
 
     const refreshUser = async () => {
         try {
@@ -98,7 +100,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 isAuthenticated: !!user,
                 login,
                 register,
-                //logout,
+                logout,
                 refreshUser,
             }}
         >

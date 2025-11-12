@@ -9,7 +9,7 @@ export interface IAuthRepository {
 
     register(data: RegisterData): Promise<AuthResponse>
 
-    //logout():Promise<void>;
+    logout():Promise<void>;
 
     refreshToken(refreshToken: string): Promise<AuthTokens>
 

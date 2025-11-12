@@ -1,5 +1,3 @@
-// app/(tabs)/profile.tsx
-
 import { useAuth } from '@/src/presentation/context/AuthContext';
 import { FontAwesome5, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -10,7 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function ProfileScreen() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   if (!user) {
@@ -39,7 +37,7 @@ export default function ProfileScreen() {
     : '30 de Noviembre, 2025';
 
 
-  /*const handleLogout = () => {
+  const handleLogout = () => {
     Alert.alert('Cerrar Sesión', '¿Seguro que quieres salir?', [
       { text: 'Cancelar', style: 'cancel' },
       {
@@ -51,7 +49,7 @@ export default function ProfileScreen() {
         },
       },
     ]);
-  }; */
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -142,10 +140,10 @@ export default function ProfileScreen() {
         </View>
 
 
-        {/*<TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
           <Ionicons name="log-out" size={18} color="#fff" />
           <Text style={styles.logoutText}> Cerrar Sesión</Text>
-        </TouchableOpacity>*/}
+        </TouchableOpacity>
       </ScrollView>
 
 

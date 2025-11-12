@@ -1,5 +1,5 @@
 export const API_CONFIG = {
-    BASE_URL: "http://localhost:8080/api",
+    BASE_URL: "http://192.168.18.79:8080/api",
     TIMEOUT: 10000,
     HEADERS: {
         'Content-Type': 'application/json'
@@ -10,6 +10,7 @@ export const API_ENDPOINTS = {
     LOGIN: "auth/login",
     REGISTER: "auth/register",
     REFRESH: "auth/refresh",
+    LOGOUT: "auth/logout",
     GET_PROFILE: "auth/me",
     EQUIPMENT: "/equipment"
 }

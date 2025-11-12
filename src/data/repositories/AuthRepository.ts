@@ -1,5 +1,3 @@
-// src/data/repositories/AuthRepository.ts
-
 import { apiClient } from '../api/ApiClient';
 import { LocalStorage } from '../storage/LocalStorage';
 import { API_ENDPOINTS } from '@/src/core/config/api';
@@ -117,7 +115,7 @@ export class AuthRepository implements IAuthRepository {
 
   
 
-  /*async logout(): Promise<void> {
+  async logout(): Promise<void> {
     try {
       await apiClient.post(API_ENDPOINTS.LOGOUT);
     } catch (error) {
@@ -125,7 +123,7 @@ export class AuthRepository implements IAuthRepository {
     } finally {    
       await this.clearTokens();
     }
-  } */
+  }
 
   
   async refreshToken(refreshToken: string): Promise<AuthTokens> {
