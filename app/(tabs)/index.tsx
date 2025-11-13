@@ -95,7 +95,7 @@ export default function HomeScreen() {
             <Text style={styles.cardTitle}>Estado de tu Plan</Text>
           </View>
           <Text style={styles.textMuted}>Plan Actual</Text>
-          <Text style={styles.textMain}>{planName}</Text>
+          <Text style={styles.textMain}>{user?.membership}</Text>
           <Text style={styles.textMutedSmall}>Vigente hasta</Text>
           <Text style={styles.textMain}>{planExpiryDate}</Text>
         </View>
@@ -105,14 +105,7 @@ export default function HomeScreen() {
           <Ionicons name="barbell" size={20} color="#fff" />
           <Text style={styles.reserveText}>Ver máquinas disponibles</Text>
         </TouchableOpacity>
-
-
-        <View style={styles.infoBox}>
-          <Ionicons name="information-circle" size={20} color="#007AFF" />
-          <Text style={styles.infoText}>
-            Datos de aforo y plan son temporales. Conecta tus endpoints para ver datos reales.
-          </Text>
-        </View>
+        
       </ScrollView>
     </SafeAreaView>
   );
