@@ -1,15 +1,18 @@
 import { useAuth } from '@/src/presentation/context/AuthContext';
 import { FontAwesome5, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
-import { Alert, Image, Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { Animated, Alert, Image, Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 
 export default function ProfileScreen() {
   const router = useRouter();
   const { user, logout } = useAuth();
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+
+  const scrollY = useRef(new Animated.Value(0)).current;
 
   if (!user) {
     return (
@@ -51,11 +54,68 @@ export default function ProfileScreen() {
     ]);
   };
 
+  const titleScale = scrollY.interpolate({
+    inputRange: [0, 80],
+    outputRange: [1, 0.75],
+    extrapolate: 'clamp',
+  });
+
+  const titleTranslateY = scrollY.interpolate({
+    inputRange: [0, 120],
+    outputRange: [0, -40],
+    extrapolate: 'clamp',
+  });
+
+  const titleTranslateX = scrollY.interpolate({
+    inputRange: [0, 100],
+    outputRange: [0, 70],
+    extrapolate: 'clamp',
+  });
+
+  const headerOpacity = scrollY.interpolate({
+    inputRange: [1, 20],
+    outputRange: [0, 1],
+    extrapolate: 'clamp',
+  });
+
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <Animated.View
+        style={[
+          styles.header,
+          {
+            opacity: headerOpacity,
+          },
+        ]}
+      >
+        <Text style={styles.headerTitle}>Mi Perfil</Text>
+      </Animated.View>
 
-        <Text style={styles.header}>Mi Perfil</Text>
+        <Animated.ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingTop: 20 }}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: false }
+        )}
+        scrollEventThrottle={16}
+      >
+        {/* 🧭 TÍTULO ANIMADO */}
+        <Animated.View
+          style={[
+            styles.animatedTitleContainer,
+            {
+              transform: [
+                { translateY: titleTranslateY },
+                { translateX: titleTranslateX },
+                { scale: titleScale },
+              ],
+            },
+          ]}
+        >
+          <Text style={styles.mainTitle}>Mi Perfil</Text>
+        </Animated.View>
+
         <Text style={styles.subHeader}>Gestiona tu cuenta y preferencias</Text>
 
 
@@ -144,7 +204,7 @@ export default function ProfileScreen() {
           <Ionicons name="log-out" size={18} color="#fff" />
           <Text style={styles.logoutText}> Cerrar Sesión</Text>
         </TouchableOpacity>
-      </ScrollView>
+      </Animated.ScrollView>
 
 
       <Modal visible={showPaymentModal} transparent animationType="slide">
@@ -167,13 +227,50 @@ export default function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#000000ff', padding: 20, paddingBottom: 0 },
-  header: { fontSize: 26, fontWeight: 'bold', marginTop: 10, color: "#fff" },
-  subHeader: { color: '#666', marginBottom: 20 },
+  container: { flex: 1, backgroundColor: '#000000ff' },
+
+  header: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 90,
+    backgroundColor: '#111',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    paddingBottom: 12,
+    zIndex: 10,
+    borderBottomColor: '#1a1a1a',
+    borderBottomWidth: 1,
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#fff',
+  },
+
+  animatedTitleContainer: {
+    alignItems: 'flex-start',
+    marginLeft: 20,
+    marginBottom: 5,
+  },
+  mainTitle: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+
+  subHeader: {
+    color: '#666',
+    marginBottom: 20,
+    marginLeft: 20,
+  },
+
   card: {
     backgroundColor: '#1a1f26',
     borderRadius: 12,
     padding: 16,
+    marginHorizontal: 20,
     marginBottom: 16,
   },
   primaryCard: { backgroundColor: '#1d281d', borderColor: '#557a1e', borderWidth: 1 },
@@ -201,11 +298,11 @@ const styles = StyleSheet.create({
   primaryButtonText: { color: '#fff', fontSize: 16, fontWeight: '600' },
   userRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   avatar: { width: 80, height: 80, borderRadius: 40 },
-  userName: { fontSize: 20, fontWeight: 'bold', color: "#fff" },
+  userName: { fontSize: 20, fontWeight: 'bold', color: '#fff' },
   userEmail: { color: '#777', fontSize: 14 },
-  userPhone: { color: '#777', fontSize: 13, marginTop: 2 },
+  userPhone: { color: '#777', fontSize: 13 },
   userSince: { fontSize: 12, color: '#777', marginTop: 4 },
-  cardTitle: { fontSize: 18, fontWeight: '600', marginBottom: 8, color: "#fff" },
+  cardTitle: { fontSize: 18, fontWeight: '600', marginBottom: 8, color: '#fff' },
   optionRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -229,7 +326,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FF3B30',
     padding: 14,
     borderRadius: 10,
-    marginBottom: 20,
+    marginHorizontal: 20,
+    marginBottom: 40,
   },
   logoutText: { color: '#fff', fontWeight: '600', fontSize: 16 },
   modalOverlay: {
@@ -245,7 +343,7 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: 'center',
   },
-  modalTitle: { fontSize: 20, fontWeight: 'bold', marginBottom: 10, },
+  modalTitle: { fontSize: 20, fontWeight: 'bold', marginBottom: 10 },
   modalDescription: { color: '#666', textAlign: 'center', marginBottom: 20 },
   modalButton: {
     backgroundColor: '#007AFF',
