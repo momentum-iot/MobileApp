@@ -1,89 +1,119 @@
 import { useAuth } from '@/src/presentation/context/AuthContext';
+import { useCheck } from '@/src/presentation/context/CheckContext';
 import { Ionicons } from '@expo/vector-icons';
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ProgressBar } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 export default function HomeScreen() {
+
   const { user } = useAuth();
-  
-  
-  const occupancy = 70;
-  const currentPeople = 42;
-  const maxCapacity = 60;
+  const { concurrency, refreshConcurrency } = useCheck();
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const maxCapacity: number = 60;
+
+  const safeOccupancy = () => {
+    if (!concurrency || concurrency === 0 || !maxCapacity || maxCapacity === 0) {
+      return 0;
+    }
+    const percentage = (concurrency / maxCapacity) * 100;
+    return Math.min(Math.round(percentage), 100);
+  };
+
+  const occupancy = safeOccupancy();
+  const safeConcurrency = concurrency || 0;
+
   const planName = 'Plan Premium';
   const planExpiryDate = '30 de Noviembre, 2025';
 
-  const getOccupancyColor = (percentage: number) => {
-    if (percentage < 50) return '#007AFF';
-    if (percentage < 80) return '#FFD700';
+  const getOccupancyColor = (occupancy: number) => {
+    if (occupancy < 50) return '#007AFF';
+    if (occupancy < 80) return '#FFD700';
     return '#FF3B30';
   };
 
-  
   const firstName = user?.name || 'Usuario';
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await refreshConcurrency();
+    setRefreshing(false);
+  };
+
+  useEffect(() => {
+
+    refreshConcurrency();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
-    
-      <Text style={styles.headerText}>Hola, {firstName}</Text>
-      <Text style={styles.subHeader}>Bienvenido a PumpUp</Text>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
 
-    
-      <View style={styles.card}>
-        <View style={styles.cardHeader}>
-          <Ionicons name="people" size={22} color="#007AFF" />
-          <Text style={styles.cardTitle}>Aforo Actual</Text>
+        <Text style={styles.headerText}>Hola, {firstName}</Text>
+        <Text style={styles.subHeader}>Bienvenido a PumpUp</Text>
+
+
+        <View style={styles.card}>
+          <View style={styles.cardHeader}>
+            <Ionicons name="people" size={22} color="#007AFF" />
+            <Text style={styles.cardTitle}>Aforo Actual</Text>
+          </View>
+
+          <Text style={[styles.occupancy, { color: getOccupancyColor(occupancy) }]}>
+            {occupancy}%
+          </Text>
+          <Text style={styles.textMuted}>
+            {concurrency} de {maxCapacity} personas en el gimnasio
+          </Text>
+
+          <ProgressBar
+            progress={occupancy / 100}
+            color={getOccupancyColor(occupancy)}
+            style={styles.progress}
+          />
+          <Text style={styles.textMutedSmall}>
+            {occupancy < 50
+              ? '¡Momento ideal para entrenar!'
+              : occupancy < 80
+                ? 'Hay gente pero no está muy lleno'
+                : 'El gimnasio está bastante lleno'}
+          </Text>
         </View>
 
-        <Text style={[styles.occupancy, { color: getOccupancyColor(occupancy) }]}>
-          {occupancy}%
-        </Text>
-        <Text style={styles.textMuted}>
-          {currentPeople} de {maxCapacity} personas en el gimnasio
-        </Text>
 
-        <ProgressBar 
-          progress={occupancy / 100} 
-          color={getOccupancyColor(occupancy)} 
-          style={styles.progress} 
-        />
-        <Text style={styles.textMutedSmall}>
-          {occupancy < 50
-            ? '¡Perfecto momento para entrenar!'
-            : occupancy < 80
-            ? 'Hay gente pero no está muy lleno'
-            : 'El gimnasio está bastante lleno'}
-        </Text>
-      </View>
-
-    
-      <View style={styles.card}>
-        <View style={styles.cardHeader}>
-          <Ionicons name="calendar" size={22} color="#007AFF" />
-          <Text style={styles.cardTitle}>Estado de tu Plan</Text>
+        <View style={styles.card}>
+          <View style={styles.cardHeader}>
+            <Ionicons name="calendar" size={22} color="#007AFF" />
+            <Text style={styles.cardTitle}>Estado de tu Plan</Text>
+          </View>
+          <Text style={styles.textMuted}>Plan Actual</Text>
+          <Text style={styles.textMain}>{planName}</Text>
+          <Text style={styles.textMutedSmall}>Vigente hasta</Text>
+          <Text style={styles.textMain}>{planExpiryDate}</Text>
         </View>
-        <Text style={styles.textMuted}>Plan Actual</Text>
-        <Text style={styles.textMain}>{planName}</Text>
-        <Text style={styles.textMutedSmall}>Vigente hasta</Text>
-        <Text style={styles.textMain}>{planExpiryDate}</Text>
-      </View>
 
-    
-      <TouchableOpacity style={styles.reserveButton}>
-        <Ionicons name="barbell" size={20} color="#fff" />
-        <Text style={styles.reserveText}>Ver máquinas disponibles</Text>
-      </TouchableOpacity>
 
-    
-      <View style={styles.infoBox}>
-        <Ionicons name="information-circle" size={20} color="#007AFF" />
-        <Text style={styles.infoText}>
-          Datos de aforo y plan son temporales. Conecta tus endpoints para ver datos reales.
-        </Text>
-      </View>
+        <TouchableOpacity style={styles.reserveButton}>
+          <Ionicons name="barbell" size={20} color="#fff" />
+          <Text style={styles.reserveText}>Ver máquinas disponibles</Text>
+        </TouchableOpacity>
+
+
+        <View style={styles.infoBox}>
+          <Ionicons name="information-circle" size={20} color="#007AFF" />
+          <Text style={styles.infoText}>
+            Datos de aforo y plan son temporales. Conecta tus endpoints para ver datos reales.
+          </Text>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
