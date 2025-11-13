@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
   title: { fontSize: 28, fontWeight: 'normal', color: '#ffffffff', marginTop: 20 },
   subtitle: { fontSize: 16, color: '#666' },
   form: { marginBottom: 20 },
-  label: { color: '#333', marginBottom: 6, fontWeight: '500' },
+  label: { color: '#fff', marginBottom: 6, fontWeight: '500' },
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
