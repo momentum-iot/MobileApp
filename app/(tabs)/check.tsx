@@ -20,31 +20,19 @@ export default function CheckScreen() {
   const handleCheckIn = async () => {
     try {
       const message = await checkIn();
-      Alert.alert('¡Check-in exitoso!', message, [{ text: 'OK' }]);
+      //Alert.alert('¡Check-in exitoso!', message, [{ text: 'OK' }]);
     } catch (error: any) {
       Alert.alert('Error', error.message || 'No se pudo hacer check-in');
     }
   };
 
   const handleCheckOut = async () => {
-    Alert.alert(
-      'Confirmar Check-out',
-      '¿Estás seguro que deseas salir del gimnasio?',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        {
-          text: 'Sí, salir',
-          onPress: async () => {
-            try {
-              const message = await checkOut();
-              Alert.alert('¡Check-out exitoso!', message, [{ text: 'OK' }]);
-            } catch (error: any) {
-              Alert.alert('Error', error.message || 'No se pudo hacer check-out');
-            }
-          },
-        },
-      ]
-    );
+    try {
+      const message = await checkOut();
+      //Alert.alert('¡Check-out exitoso!', message, [{ text: 'OK' }]);
+    } catch (error: any) {
+      Alert.alert('Error', error.message || 'No se pudo hacer check-in');
+    }
   };
 
   return (
