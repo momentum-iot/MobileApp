@@ -25,6 +25,13 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="check"
+        options={{
+          title: 'Check',
+          tabBarIcon: ({ color }) => <Ionicons name="enter" size={26} color={color} />,
+        }}
+      />
+      <Tabs.Screen
         name="progress"
         options={{
           title: 'Progreso',
