@@ -15,7 +15,8 @@ export const API_ENDPOINTS = {
     CHECK_IN: "check/in",
     CHECK_OUT: "check/out",
     GET_CONCURRENCY: "check/concurrency",
-    GET_USER_STATUS: "check/status"
+    GET_USER_STATUS: "check/status",
+    GET_HEART_RATE: "heart-rate/{userId}"
 }
 
 export const buildUrl = (endpoint: string): string => {
