@@ -26,7 +26,7 @@ export default function RootLayout() {
       </Stack>
 
 
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
     </ThemeProvider>
     </CheckProvider>
     </AuthProvider>

@@ -60,7 +60,7 @@ export default function LoginScreen() {
         
         <View style={styles.logoContainer}>
           <View style={styles.logoBox}>
-            <Ionicons name="barbell" size={50} color="#fff" />
+            <Ionicons name="barbell" size={50} color="#000000ff" />
           </View>
           <Text style={styles.title}>PumpUp</Text>
           <Text style={styles.subtitle}>Bienvenido de vuelta</Text>
@@ -124,7 +124,7 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#000000ff',
   },
   inner: {
     flex: 1,
@@ -136,14 +136,14 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   logoBox: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#84c217',
     width: 100,
     height: 100,
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  title: { fontSize: 28, fontWeight: 'bold', color: '#000', marginTop: 20 },
+  title: { fontSize: 28, fontWeight: 'normal', color: '#ffffffff', marginTop: 20 },
   subtitle: { fontSize: 16, color: '#666' },
   form: { marginBottom: 20 },
   label: { color: '#333', marginBottom: 6, fontWeight: '500' },
@@ -153,10 +153,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 12,
     marginBottom: 16,
-    color: '#000',
+    color: '#ffffffff',
   },
   button: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#84c217',
     padding: 14,
     borderRadius: 10,
     alignItems: 'center',
@@ -165,8 +165,8 @@ const styles = StyleSheet.create({
   buttonDisabled: {
     opacity: 0.6,
   },
-  buttonText: { color: '#fff', fontWeight: '600', fontSize: 16 },
+  buttonText: { color: '#000000ff', fontWeight: '600', fontSize: 16 },
   extraOptions: { alignItems: 'center', marginTop: 10 },
-  link: { color: '#007AFF', fontWeight: '500' },
+  link: { color: '#84c217', fontWeight: '500' },
   linkMuted: { color: '#666' },
 });

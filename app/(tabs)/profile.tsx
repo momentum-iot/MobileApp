@@ -52,7 +52,7 @@ export default function ProfileScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <ScrollView showsVerticalScrollIndicator={false}>
 
         <Text style={styles.header}>Mi Perfil</Text>
@@ -106,7 +106,7 @@ export default function ProfileScreen() {
           <TouchableOpacity style={styles.optionRow}>
             <View style={styles.optionLeft}>
               <View style={styles.iconContainer}>
-                <MaterialCommunityIcons name="receipt" size={20} color="#007AFF" />
+                <MaterialCommunityIcons name="receipt" size={20} color="#84c217" />
               </View>
               <Text style={styles.optionText}>Ver historial de pagos</Text>
             </View>
@@ -121,7 +121,7 @@ export default function ProfileScreen() {
           <TouchableOpacity style={styles.optionRow}>
             <View style={styles.optionLeft}>
               <View style={styles.iconContainer}>
-                <Ionicons name="person" size={20} color="#007AFF" />
+                <Ionicons name="person" size={20} color="#84c217" />
               </View>
               <Text style={styles.optionText}>Editar Información Personal</Text>
             </View>
@@ -131,7 +131,7 @@ export default function ProfileScreen() {
           <TouchableOpacity style={styles.optionRow}>
             <View style={styles.optionLeft}>
               <View style={styles.iconContainer}>
-                <Ionicons name="lock-closed" size={20} color="#007AFF" />
+                <Ionicons name="lock-closed" size={20} color="#84c217" />
               </View>
               <Text style={styles.optionText}>Cambiar Contraseña</Text>
             </View>
@@ -167,20 +167,20 @@ export default function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff', padding: 20 },
-  header: { fontSize: 26, fontWeight: 'bold', marginTop: 10 },
+  container: { flex: 1, backgroundColor: '#000000ff', padding: 20, paddingBottom: 0 },
+  header: { fontSize: 26, fontWeight: 'bold', marginTop: 10, color: "#fff" },
   subHeader: { color: '#666', marginBottom: 20 },
   card: {
-    backgroundColor: '#F9F9F9',
+    backgroundColor: '#1a1f26',
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,
   },
-  primaryCard: { backgroundColor: '#EAF3FF', borderColor: '#007AFF', borderWidth: 1 },
+  primaryCard: { backgroundColor: '#1d281d', borderColor: '#557a1e', borderWidth: 1 },
   rowBetween: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   rowCenter: { flexDirection: 'row', alignItems: 'center' },
   badge: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#84c217',
     color: '#fff',
     borderRadius: 6,
     paddingHorizontal: 8,
@@ -188,9 +188,9 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   label: { fontSize: 12, color: '#777', marginTop: 10 },
-  planText: { fontSize: 16, fontWeight: '500', color: '#333' },
+  planText: { fontSize: 16, fontWeight: '500', color: '#fff' },
   primaryButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#84c217',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -201,11 +201,11 @@ const styles = StyleSheet.create({
   primaryButtonText: { color: '#fff', fontSize: 16, fontWeight: '600' },
   userRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   avatar: { width: 80, height: 80, borderRadius: 40 },
-  userName: { fontSize: 20, fontWeight: 'bold' },
-  userEmail: { color: '#555', fontSize: 14 },
+  userName: { fontSize: 20, fontWeight: 'bold', color: "#fff" },
+  userEmail: { color: '#777', fontSize: 14 },
   userPhone: { color: '#777', fontSize: 13, marginTop: 2 },
   userSince: { fontSize: 12, color: '#777', marginTop: 4 },
-  cardTitle: { fontSize: 18, fontWeight: '600', marginBottom: 8 },
+  cardTitle: { fontSize: 18, fontWeight: '600', marginBottom: 8, color: "#fff" },
   optionRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -213,11 +213,11 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   optionLeft: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  optionText: { fontSize: 15, color: '#333' },
+  optionText: { fontSize: 15, color: '#fff' },
   iconContainer: {
     width: 36,
     height: 36,
-    backgroundColor: '#EAF3FF',
+    backgroundColor: '#414b51',
     borderRadius: 18,
     justifyContent: 'center',
     alignItems: 'center',
@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: 'center',
   },
-  modalTitle: { fontSize: 20, fontWeight: 'bold', marginBottom: 10 },
+  modalTitle: { fontSize: 20, fontWeight: 'bold', marginBottom: 10, },
   modalDescription: { color: '#666', textAlign: 'center', marginBottom: 20 },
   modalButton: {
     backgroundColor: '#007AFF',

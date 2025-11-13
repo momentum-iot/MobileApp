@@ -30,7 +30,7 @@ export default function HomeScreen() {
   const planExpiryDate = '30 de Noviembre, 2025';
 
   const getOccupancyColor = (occupancy: number) => {
-    if (occupancy < 50) return '#007AFF';
+    if (occupancy < 50) return '#84c217';
     if (occupancy < 80) return '#FFD700';
     return '#FF3B30';
   };
@@ -63,14 +63,14 @@ export default function HomeScreen() {
 
         <View style={styles.card}>
           <View style={styles.cardHeader}>
-            <Ionicons name="people" size={22} color="#007AFF" />
+            <Ionicons name="people" size={22} color="#666" />
             <Text style={styles.cardTitle}>Aforo Actual</Text>
           </View>
 
           <Text style={[styles.occupancy, { color: getOccupancyColor(occupancy) }]}>
             {occupancy}%
           </Text>
-          <Text style={styles.textMuted}>
+          <Text style={styles.textMutedOccupancy}>
             {concurrency} de {maxCapacity} personas en el gimnasio
           </Text>
 
@@ -79,7 +79,7 @@ export default function HomeScreen() {
             color={getOccupancyColor(occupancy)}
             style={styles.progress}
           />
-          <Text style={styles.textMutedSmall}>
+          <Text style={styles.textMutedSmallOccupancy}>
             {occupancy < 50
               ? '¡Momento ideal para entrenar!'
               : occupancy < 80
@@ -91,7 +91,7 @@ export default function HomeScreen() {
 
         <View style={styles.card}>
           <View style={styles.cardHeader}>
-            <Ionicons name="calendar" size={22} color="#007AFF" />
+            <Ionicons name="calendar" size={22} color="#666" />
             <Text style={styles.cardTitle}>Estado de tu Plan</Text>
           </View>
           <Text style={styles.textMuted}>Plan Actual</Text>
@@ -105,7 +105,6 @@ export default function HomeScreen() {
           <Ionicons name="barbell" size={20} color="#fff" />
           <Text style={styles.reserveText}>Ver máquinas disponibles</Text>
         </TouchableOpacity>
-        
       </ScrollView>
     </SafeAreaView>
   );
@@ -114,36 +113,38 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#000000ff',
     padding: 20,
   },
   headerText: {
     fontSize: 26,
     fontWeight: 'bold',
     marginTop: 10,
+    color: '#fff'
   },
   subHeader: {
     color: '#666',
     marginBottom: 20,
   },
   card: {
-    backgroundColor: '#F9F9F9',
+    backgroundColor: '#1a1f26',
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
+    //shadowColor: '#000',
+    //shadowOpacity: 0.1,
+    //shadowRadius: 3,
   },
   cardHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-    marginBottom: 8,
+    marginBottom: 8
   },
   cardTitle: {
     fontSize: 18,
     fontWeight: '600',
+    color: "#fff"
   },
   occupancy: {
     fontSize: 48,
@@ -156,26 +157,41 @@ const styles = StyleSheet.create({
     marginTop: 8,
     marginBottom: 4,
   },
-  textMuted: {
+
+  textMutedOccupancy: {
     textAlign: 'center',
     color: '#777',
   },
-  textMutedSmall: {
+
+  textMuted: {
+    textAlign: 'left',
+    color: '#777',
+  },
+
+  textMutedSmallOccupancy: {
     textAlign: 'center',
     color: '#999',
     fontSize: 12,
   },
+
+  textMutedSmall: {
+    textAlign: 'left',
+    color: '#999',
+    fontSize: 12,
+    marginBottom: 8,
+  },
+
   textMain: {
     fontSize: 16,
     fontWeight: '500',
-    color: '#333',
+    color: '#fff',
     marginBottom: 4,
   },
   reserveButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#007AFF',
+    backgroundColor: '#84c217',
     padding: 14,
     borderRadius: 10,
     gap: 8,
