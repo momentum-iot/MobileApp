@@ -12,7 +12,9 @@ export const API_ENDPOINTS = {
     REFRESH: "auth/refresh",
     LOGOUT: "auth/logout",
     GET_PROFILE: "auth/me",
-    EQUIPMENT: "/equipment"
+    EQUIPMENT: "/equipment",
+    CHECK_IN: "/in",
+    CHECK_OUT: "/out"
 }
 
 export const buildUrl = (endpoint: string): string => {
