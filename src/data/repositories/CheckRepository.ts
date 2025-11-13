@@ -29,8 +29,11 @@ export class CheckRepository implements ICheckRepository {
 
     async getConcurrency(): Promise<number> {
         try {
-            const response = await apiClient.get<number>(API_ENDPOINTS.GET_CONCURRENCY);
-            return response;
+            const response = await apiClient.get<any>(API_ENDPOINTS.GET_CONCURRENCY);
+
+            const count = typeof response === 'number' ? response : (response.count || response || 0);
+
+            return typeof count === 'number' && !isNaN(count) ? count : 0;
         } catch (error) {
             console.error('Error al obtener concurrencia:', error);
             return 0;
