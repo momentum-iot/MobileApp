@@ -2,6 +2,8 @@ import { useAuth } from '@/src/presentation/context/AuthContext';
 import { useCheck } from '@/src/presentation/context/CheckContext';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
+import * as Haptics from 'expo-haptics';
+
 import {
   StyleSheet,
   Text,
@@ -19,6 +21,7 @@ export default function CheckScreen() {
 
   const handleCheckIn = async () => {
     try {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Rigid);
       const message = await checkIn();
       //Alert.alert('¡Check-in exitoso!', message, [{ text: 'OK' }]);
     } catch (error: any) {
@@ -28,8 +31,9 @@ export default function CheckScreen() {
 
   const handleCheckOut = async () => {
     try {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Rigid);
       const message = await checkOut();
-      //Alert.alert('¡Check-out exitoso!', message, [{ text: 'OK' }]);
+      //Alert.alert('¡Check-in exitoso!', message, [{ text: 'OK' }]);
     } catch (error: any) {
       Alert.alert('Error', error.message || 'No se pudo hacer check-in');
     }
@@ -63,14 +67,14 @@ export default function CheckScreen() {
       
       <View style={styles.card}>
         <View style={styles.infoRow}>
-          <Ionicons name="person" size={20} color="#007AFF" />
+          <Ionicons name="person" size={20} color="#84c217" />
           <Text style={styles.infoLabel}>Usuario:</Text>
           <Text style={styles.infoValue}>
             {user?.name} {user?.lastName}
           </Text>
         </View>
         <View style={styles.infoRow}>
-          <Ionicons name="people" size={20} color="#007AFF" />
+          <Ionicons name="people" size={20} color="#84c217" />
           <Text style={styles.infoLabel}>Personas dentro:</Text>
           <Text style={styles.infoValue}>{concurrency}</Text>
         </View>
@@ -113,7 +117,7 @@ export default function CheckScreen() {
 
       
       <View style={styles.infoBox}>
-        <Ionicons name="information-circle" size={20} color="#007AFF" />
+        <Ionicons name="information-circle" size={20} color="#84c217" />
         <Text style={styles.infoBoxText}>
           {isInside
             ? 'Asegúrate de hacer check-out al salir para que otros sepan el aforo real.'
@@ -133,13 +137,14 @@ export default function CheckScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#000000ff',
     padding: 20,
   },
   header: {
     fontSize: 26,
     fontWeight: 'bold',
     marginTop: 10,
+    color: "#fff"
   },
   subHeader: {
     color: '#666',
@@ -153,11 +158,11 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   statusInside: {
-    backgroundColor: '#E8F5E9',
+    backgroundColor: '#1a1f26',
     borderColor: '#34C759',
   },
   statusOutside: {
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#1a1f26',
     borderColor: '#E0E0E0',
   },
   statusIcon: {
@@ -168,6 +173,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 8,
     textAlign: 'center',
+    color: "#fff"
   },
   statusSubtitle: {
     fontSize: 14,
@@ -175,7 +181,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   card: {
-    backgroundColor: '#F9F9F9',
+    backgroundColor: '#1a1f26',
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,
@@ -188,12 +194,12 @@ const styles = StyleSheet.create({
   },
   infoLabel: {
     fontSize: 15,
-    color: '#666',
+    color: '#fff',
   },
   infoValue: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#000',
+    color: '#fff',
     flex: 1,
     textAlign: 'right',
   },
@@ -224,7 +230,7 @@ const styles = StyleSheet.create({
   },
   infoBox: {
     flexDirection: 'row',
-    backgroundColor: '#EAF3FF',
+    backgroundColor: '#1a1f26',
     padding: 12,
     borderRadius: 10,
     gap: 10,
@@ -234,12 +240,13 @@ const styles = StyleSheet.create({
   infoBoxText: {
     flex: 1,
     fontSize: 13,
-    color: '#555',
+    color: '#fff',
   },
   cardTitle: {
     fontSize: 16,
     fontWeight: '600',
     marginBottom: 4,
+    color: "#fff"
   },
   cardSubtitle: {
     fontSize: 14,
