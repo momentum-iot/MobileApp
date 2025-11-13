@@ -13,7 +13,9 @@ export const API_ENDPOINTS = {
     LOGOUT: "auth/logout",
     GET_PROFILE: "auth/me",
     CHECK_IN: "check/in",
-    CHECK_OUT: "check/out"
+    CHECK_OUT: "check/out",
+    GET_CONCURRENCY: "check/concurrency",
+    GET_USER_STATUS: "check/status"
 }
 
 export const buildUrl = (endpoint: string): string => {
