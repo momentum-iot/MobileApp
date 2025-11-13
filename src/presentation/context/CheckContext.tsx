@@ -4,6 +4,7 @@ import { CheckOutUseCase } from "@/src/domain/usecases/CheckOutUseCase";
 import { GetConcurrencyUseCase } from "@/src/domain/usecases/GetConcurrencyUseCase";
 import { GetUserStatusUseCase } from "@/src/domain/usecases/GetStatusUseCase";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { useAuth } from "@/src/presentation/context/AuthContext";
 
 const checkInUseCase = new CheckInUseCase(checkRepository);
 const checkOutUseCase = new CheckOutUseCase(checkRepository);
@@ -27,12 +28,16 @@ interface CheckProviderProps {
 }
 
 export function CheckProvider({ children }: CheckProviderProps) {
+    const { user } = useAuth();
     const [isInside, setIsInside] = useState(false);
     const [concurrency, setConcurrency] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
 
 
     useEffect(() => {
+
+        if (!user) return;
+
         loadInitialData();
 
 
@@ -41,7 +46,7 @@ export function CheckProvider({ children }: CheckProviderProps) {
         }, 60000);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [user]);
 
     const loadInitialData = async () => {
         await Promise.all([
