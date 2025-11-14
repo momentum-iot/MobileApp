@@ -91,7 +91,7 @@ export default function ProfileScreen() {
         <Text style={styles.headerTitle}>Mi Perfil</Text>
       </Animated.View>
 
-        <Animated.ScrollView
+      <Animated.ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingTop: 20 }}
         onScroll={Animated.event(
@@ -100,7 +100,7 @@ export default function ProfileScreen() {
         )}
         scrollEventThrottle={16}
       >
-        {/* 🧭 TÍTULO ANIMADO */}
+
         <Animated.View
           style={[
             styles.animatedTitleContainer,

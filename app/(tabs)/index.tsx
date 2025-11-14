@@ -63,7 +63,7 @@ export default function HomeScreen() {
 
         <View style={styles.card}>
           <View style={styles.cardHeader}>
-            <Ionicons name="people" size={22} color="#666" />
+            <Ionicons name="people" size={22} color="#84c217" />
             <Text style={styles.cardTitle}>Aforo Actual</Text>
           </View>
 
@@ -91,7 +91,7 @@ export default function HomeScreen() {
 
         <View style={styles.card}>
           <View style={styles.cardHeader}>
-            <Ionicons name="calendar" size={22} color="#666" />
+            <Ionicons name="calendar" size={22} color="#84c217" />
             <Text style={styles.cardTitle}>Estado de tu Plan</Text>
           </View>
           <Text style={styles.textMuted}>Plan Actual</Text>
@@ -131,9 +131,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,
-    //shadowColor: '#000',
-    //shadowOpacity: 0.1,
-    //shadowRadius: 3,
   },
   cardHeader: {
     flexDirection: 'row',
