@@ -40,10 +40,10 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="progress"
+        name="heart-rate"
         options={{
-          title: 'Progreso',
-          tabBarIcon: ({ color }) => <Ionicons name="stats-chart" size={26} color={color} />,
+          title: 'Heart Rate',
+          tabBarIcon: ({ color }) => <Ionicons size={28} name="heart-outline" color={color} />,
         }}
       />
       <Tabs.Screen
