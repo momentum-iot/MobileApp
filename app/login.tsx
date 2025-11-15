@@ -47,10 +47,6 @@ export default function LoginScreen() {
     Alert.alert('Recuperar contraseña', 'Esta función aún no está implementada.');
   };
 
-  const handleRegister = () => {
-    router.push('/register');
-  };
-
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -108,12 +104,6 @@ export default function LoginScreen() {
         <View style={styles.extraOptions}>
           <TouchableOpacity onPress={handleRecoverPassword} disabled={isLoading}>
             <Text style={styles.link}>¿Olvidaste tu contraseña?</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={handleRegister} disabled={isLoading}>
-            <Text style={styles.linkMuted}>
-              ¿No tienes cuenta? <Text style={styles.link}>Regístrate</Text>
-            </Text>
           </TouchableOpacity>
         </View>
       </View>

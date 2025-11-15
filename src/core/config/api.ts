@@ -1,5 +1,5 @@
 export const API_CONFIG = {
-    BASE_URL: "http://192.168.18.79:8080/api",
+    BASE_URL: "http://192.168.18.82:8080/api",
     TIMEOUT: 10000,
     HEADERS: {
         'Content-Type': 'application/json'
@@ -16,6 +16,7 @@ export const API_ENDPOINTS = {
     CHECK_OUT: "check/out",
     GET_CONCURRENCY: "check/concurrency",
     GET_USER_STATUS: "check/status",
+    SAVE_HEART_RATE: "heart-rate/{userId}",
     GET_HEART_RATE: "heart-rate/{userId}"
 }
 
